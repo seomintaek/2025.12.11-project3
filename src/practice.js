@@ -31,8 +31,8 @@ function initNavigation() {
 
 // 초기화
 document.addEventListener('DOMContentLoaded', () => {
-  // 3단계 접근 권한 확인
-  ProgressManager.checkAuth(3);
+  // 3단계 접근 권한 확인 (경로 자동 감지)
+  ProgressManager.checkAuth();
   
   // 네비게이션 바 초기화
   initNavigation();

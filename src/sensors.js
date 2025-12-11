@@ -142,8 +142,8 @@ function initNavigation() {
 
 // 초기화
 function init() {
-  // 2단계 접근 권한 확인
-  ProgressManager.checkAuth(2);
+  // 2단계 접근 권한 확인 (경로 자동 감지)
+  ProgressManager.checkAuth();
   
   // 페이지 로드 성공 시 2단계 해제
   ProgressManager.unlockStage(2);

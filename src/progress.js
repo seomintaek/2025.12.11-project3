@@ -44,14 +44,32 @@ export class ProgressManager {
   }
 
   /**
-   * 현재 페이지에 접근 권한이 없으면 경고창을 띄우고 index.html로 강제 이동시킵니다.
-   * @param {number} requiredStage - 현재 페이지에 필요한 최소 단계
+   * 현재 페이지에 접근 권한이 없으면 경고창을 띄우고 적절한 페이지로 강제 이동시킵니다.
+   * 경로를 자동 감지하여 권한을 확인합니다 (Netlify 호환성: .includes() 사용)
    */
-  static checkAuth(requiredStage) {
-    if (!this.canAccess(requiredStage)) {
-      alert(`아직 ${requiredStage}단계를 완료하지 않았습니다. 먼저 이전 단계를 완료해주세요!`);
-      window.location.href = 'index.html';
+  static checkAuth() {
+    const pathname = window.location.pathname;
+    const currentStage = this.getCurrentStage();
+    
+    // sensors 페이지(2페이지) 체크
+    if (pathname.includes('sensors') || pathname.includes('sencors')) {
+      if (currentStage < 2) {
+        alert('아직 아이디어를 구상하지 않았어요!');
+        window.location.href = '/index.html';
+        return;
+      }
     }
+    
+    // practice 페이지(3페이지) 체크
+    if (pathname.includes('practice')) {
+      if (currentStage < 3) {
+        alert('센서 공부를 먼저 하고 오세요!');
+        window.location.href = '/sencors.html';
+        return;
+      }
+    }
+    
+    // 그 외(이미 깬 단계거나 낮은 단계 페이지): 통과
   }
 }
 

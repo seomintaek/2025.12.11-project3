@@ -169,6 +169,16 @@
       </div>
     </div>
 
+    <!-- Reset 버튼 (개발자용) -->
+    <button class="reset-button" id="resetButton" title="진도 초기화">[Reset]</button>
+
     <script type="module" src="/src/sensors.js"></script>
+    <script>
+      // Reset 버튼 이벤트 리스너
+      document.getElementById('resetButton').addEventListener('click', () => {
+        localStorage.clear();
+        window.location.href = '/index.html';
+      });
+    </script>
   </body>
 </html>
