@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src 'self' https://wokwi.com;">
     <title>아두이노 & 브레드보드 실습</title>
   </head>
   <body>
@@ -60,12 +61,12 @@
 
           <div class="tinkercad-container">
             <iframe
-              src="https://wokwi.com/projects/450009305951296513"
+              src="https://wokwi.com/projects/450009305951296513?output=1"
               width="100%"
               height="600px"
               style="border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"
               title="Arduino Simulator"
-              allow="autoplay; encrypted-media; geolocation; microphone; camera; midi; vr; accelerometer; gyroscope; payment; serial"
+              allow="autoplay; camera; microphone; serial"
               sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
             ></iframe>
           </div>
