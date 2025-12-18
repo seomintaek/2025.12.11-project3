@@ -206,8 +206,12 @@ function renderHistory(container) {
     container.appendChild(welcomeDiv);
   }
   
-  // 저장된 대화 내역을 UI에 복원
+  // 저장된 대화 내역을 UI에 복원 (시스템 메시지는 제외)
   chatbotHistory.forEach((msg) => {
+    // 시스템 메시지는 UI에 표시하지 않음 (API 전용)
+    if (msg.role === 'system') {
+      return;
+    }
     addMessage(container, msg.role === 'user' ? 'user' : 'ai', msg.content, false);
   });
   
@@ -289,6 +293,25 @@ export function initChatbot(options) {
   
   // 저장된 대화 내역 불러오기
   chatbotHistory = loadHistory();
+  
+  // 강제 업데이트: 시스템 프롬프트를 최신 페르소나로 덮어씌우기
+  const newSystemPrompt = currentPersona.systemPrompt;
+  if (chatbotHistory.length > 0 && chatbotHistory[0].role === 'system') {
+    // 첫 번째 메시지가 시스템 메시지면 강제로 최신 버전으로 교체
+    chatbotHistory[0].content = newSystemPrompt;
+  } else {
+    // 시스템 메시지가 없으면 맨 앞에 추가
+    chatbotHistory.unshift({ role: 'system', content: newSystemPrompt });
+  }
+  
+  // 업데이트된 대화 내역을 localStorage에 저장
+  if (storageKey) {
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(chatbotHistory));
+    } catch (error) {
+      console.error('시스템 프롬프트 업데이트 저장 실패:', error);
+    }
+  }
   
   // 제목 업데이트 (있는 경우)
   if (titleElement) {
@@ -438,11 +461,13 @@ async function getAIResponse(container) {
     throw new Error('OpenAI API 키가 설정되지 않았습니다. .env 파일을 확인해주세요.');
   }
 
-  // 메시지 구성: system + 과거 대화 기록 + 현재 사용자 메시지
-  const messages = [
-    { role: 'system', content: currentPersona.systemPrompt },
-    ...chatbotHistory  // 과거 대화 기록 (이미 현재 사용자 메시지 포함)
-  ];
+  // 메시지 구성: chatbotHistory에 이미 시스템 프롬프트가 포함되어 있어야 함
+  // (initChatbot에서 이미 최신 시스템 프롬프트로 강제 업데이트됨)
+  // 안전장치: 만약 시스템 메시지가 없으면 맨 앞에 추가
+  let messages = [...chatbotHistory];
+  if (messages.length === 0 || messages[0].role !== 'system') {
+    messages.unshift({ role: 'system', content: currentPersona.systemPrompt });
+  }
 
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
