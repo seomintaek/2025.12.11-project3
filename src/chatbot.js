@@ -76,7 +76,8 @@ const PERSONAS = {
 
 // 챗봇 상태 관리 (페이지별로 독립적으로 관리)
 let chatbotHistory = [];
-let currentPersona = null;
+let currentSystemRole = null; // 현재 페이지의 시스템 프롬프트
+let currentInitialMessage = null; // 현재 페이지의 초기 메시지
 let storageKey = null;
 let messagesContainer = null;
 
@@ -200,7 +201,7 @@ function renderHistory(container) {
     welcomeDiv.className = 'chatbot-message ai-message';
     welcomeDiv.innerHTML = `
       <div class="message-bubble">
-        ${currentPersona.welcomeMessage}
+        ${currentInitialMessage || '안녕하세요! 무엇을 도와드릴까요?'}
       </div>
     `;
     container.appendChild(welcomeDiv);
@@ -222,13 +223,16 @@ function renderHistory(container) {
 /**
  * 대화 내역을 초기화합니다.
  * @param {HTMLElement} container - 메시지 컨테이너 (선택사항, 없으면 전역 messagesContainer 사용)
- * @param {Function} onClear - 초기화 후 실행할 콜백 함수 (선택사항)
+ * @param {string} initialMessage - 초기 환영 메시지 (필수)
  */
-export function clearHistory(container, onClear) {
-  chatbotHistory = [];
+export function clearHistory(container, initialMessage) {
+  // 현재 페이지의 storageKey만 삭제
   if (storageKey) {
     localStorage.removeItem(storageKey);
   }
+  
+  // 대화 기록 초기화
+  chatbotHistory = [];
   
   const targetContainer = container || messagesContainer;
   
@@ -236,23 +240,20 @@ export function clearHistory(container, onClear) {
   if (targetContainer) {
     targetContainer.innerHTML = '';
     
-    // 환영 메시지 다시 추가
-    const welcomeDiv = document.createElement('div');
-    welcomeDiv.className = 'chatbot-message ai-message';
-    welcomeDiv.innerHTML = `
-      <div class="message-bubble">
-        ${currentPersona.welcomeMessage}
-      </div>
-    `;
-    targetContainer.appendChild(welcomeDiv);
-    
-    // 스크롤을 맨 아래로
-    targetContainer.scrollTop = targetContainer.scrollHeight;
-  }
-  
-  // 추가 콜백 실행
-  if (onClear && typeof onClear === 'function') {
-    onClear();
+    // 초기 메시지 다시 추가
+    if (initialMessage) {
+      const welcomeDiv = document.createElement('div');
+      welcomeDiv.className = 'chatbot-message ai-message';
+      welcomeDiv.innerHTML = `
+        <div class="message-bubble">
+          ${initialMessage}
+        </div>
+      `;
+      targetContainer.appendChild(welcomeDiv);
+      
+      // 스크롤을 맨 아래로
+      targetContainer.scrollTop = targetContainer.scrollHeight;
+    }
   }
 }
 
@@ -262,12 +263,15 @@ export function clearHistory(container, onClear) {
  * @param {HTMLElement} options.messagesContainer - 메시지 컨테이너 요소
  * @param {HTMLElement} options.inputElement - 입력 필드 요소
  * @param {HTMLElement} options.sendButton - 전송 버튼 요소
- * @param {HTMLElement} options.toggleButton - 토글 버튼 요소
- * @param {HTMLElement} options.closeButton - 닫기 버튼 요소
- * @param {HTMLElement} options.windowElement - 챗봇 창 요소
- * @param {HTMLElement} options.loadingIndicator - 로딩 표시 요소
+ * @param {HTMLElement} options.toggleButton - 토글 버튼 요소 (선택사항)
+ * @param {HTMLElement} options.closeButton - 닫기 버튼 요소 (선택사항)
+ * @param {HTMLElement} options.windowElement - 챗봇 창 요소 (선택사항)
+ * @param {HTMLElement} options.loadingIndicator - 로딩 표시 요소 (선택사항)
  * @param {HTMLElement} options.titleElement - 제목 요소 (선택사항)
  * @param {HTMLElement} options.clearButton - 대화 지우기 버튼 요소 (선택사항)
+ * @param {string} options.systemRole - 시스템 프롬프트 (필수)
+ * @param {string} options.initialMessage - 초기 환영 메시지 (필수)
+ * @param {string} options.storageKey - localStorage 키 (필수, 예: 'chat_history_MAIN')
  */
 export function initChatbot(options) {
   const {
@@ -279,58 +283,66 @@ export function initChatbot(options) {
     windowElement,
     loadingIndicator,
     titleElement,
-    clearButton
+    clearButton,
+    systemRole,
+    initialMessage,
+    storageKey: providedStorageKey
   } = options;
+
+  // 필수 파라미터 검증
+  if (!systemRole || !initialMessage || !providedStorageKey) {
+    console.error('initChatbot: systemRole, initialMessage, storageKey는 필수입니다.');
+    return;
+  }
 
   // 전역 변수에 저장
   messagesContainer = container;
+  storageKey = providedStorageKey;
+  currentSystemRole = systemRole; // 전역 변수에 저장
+  currentInitialMessage = initialMessage; // 전역 변수에 저장
 
-  // 페르소나 감지 및 설정
-  currentPersona = detectPersona();
-  
-  // 저장소 키 설정 (페르소나의 storageKey 사용)
-  storageKey = currentPersona.storageKey || getStorageKey();
-  
   // 저장된 대화 내역 불러오기
   chatbotHistory = loadHistory();
   
   // 강제 업데이트: 시스템 프롬프트를 최신 페르소나로 덮어씌우기
-  const newSystemPrompt = currentPersona.systemPrompt;
   if (chatbotHistory.length > 0 && chatbotHistory[0].role === 'system') {
     // 첫 번째 메시지가 시스템 메시지면 강제로 최신 버전으로 교체
-    chatbotHistory[0].content = newSystemPrompt;
+    chatbotHistory[0].content = systemRole;
   } else {
     // 시스템 메시지가 없으면 맨 앞에 추가
-    chatbotHistory.unshift({ role: 'system', content: newSystemPrompt });
+    chatbotHistory.unshift({ role: 'system', content: systemRole });
   }
   
   // 업데이트된 대화 내역을 localStorage에 저장
-  if (storageKey) {
-    try {
-      localStorage.setItem(storageKey, JSON.stringify(chatbotHistory));
-    } catch (error) {
-      console.error('시스템 프롬프트 업데이트 저장 실패:', error);
-    }
+  try {
+    localStorage.setItem(storageKey, JSON.stringify(chatbotHistory));
+  } catch (error) {
+    console.error('시스템 프롬프트 업데이트 저장 실패:', error);
   }
   
   // 제목 업데이트 (있는 경우)
   if (titleElement) {
-    titleElement.textContent = currentPersona.title;
+    // titleElement는 옵션이므로 페르소나에서 가져오거나 기본값 사용
+    const persona = detectPersona();
+    titleElement.textContent = persona?.title || '🤖 챗봇';
   }
   
   // 대화 내역이 있으면 UI에 복원, 없으면 환영 메시지만 표시
   if (container) {
-    if (chatbotHistory.length > 0) {
+    // 시스템 메시지를 제외한 실제 대화 기록 확인
+    const userMessages = chatbotHistory.filter(msg => msg.role !== 'system');
+    
+    if (userMessages.length > 0) {
       // 저장된 대화가 있으면 복원
       renderHistory(container);
     } else {
-      // 저장된 대화가 없으면 환영 메시지만 표시
+      // 저장된 대화가 없으면 초기 메시지 표시
       if (container.children.length === 0) {
         const welcomeDiv = document.createElement('div');
         welcomeDiv.className = 'chatbot-message ai-message';
         welcomeDiv.innerHTML = `
           <div class="message-bubble">
-            ${currentPersona.welcomeMessage}
+            ${initialMessage}
           </div>
         `;
         container.appendChild(welcomeDiv);
@@ -342,7 +354,7 @@ export function initChatbot(options) {
   if (clearButton) {
     clearButton.addEventListener('click', () => {
       if (confirm('대화 내용을 모두 지우고 처음으로 돌아갈까요?')) {
-        clearHistory(container);
+        clearHistory(container, currentInitialMessage);
       }
     });
   }
@@ -466,7 +478,12 @@ async function getAIResponse(container) {
   // 안전장치: 만약 시스템 메시지가 없으면 맨 앞에 추가
   let messages = [...chatbotHistory];
   if (messages.length === 0 || messages[0].role !== 'system') {
-    messages.unshift({ role: 'system', content: currentPersona.systemPrompt });
+    // currentSystemRole이 없으면 에러 처리
+    if (!currentSystemRole) {
+      console.error('시스템 프롬프트가 설정되지 않았습니다.');
+      throw new Error('시스템 프롬프트가 설정되지 않았습니다.');
+    }
+    messages.unshift({ role: 'system', content: currentSystemRole });
   }
 
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
