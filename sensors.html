@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/src/style.css" />
+    <title>Maker's Tutor - 센서 도서관</title>
+  </head>
+  <body>
+    <!-- 네비게이션 바 -->
+    <nav class="top-navigation" id="topNavigation">
+      <a href="./index.html" class="nav-brand" title="Maker's Tutor 홈">
+        🛠️ 💡 🚀 Maker's Tutor
+      </a>
+      <a href="./sensors.html" class="nav-item active" data-stage="1">
+        <span class="nav-number">1</span>
+        <span class="nav-label">📚 센서 도서관</span>
+      </a>
+      <a href="./ideas.html" class="nav-item" data-stage="2">
+        <span class="nav-number">2</span>
+        <span class="nav-label">💡 아이디어 톡</span>
+      </a>
+      <a href="./practice.html" class="nav-item" data-stage="3">
+        <span class="nav-number">3</span>
+        <span class="nav-label">🧪 미리보기 실험실</span>
+      </a>
+    </nav>
+    
+    <div id="app">
+      <!-- 학습 모드 섹션 -->
+      <section id="study-section" class="study-section">
+        <header class="study-header">
+          <h1>📚 센서 도서관</h1>
+          <p class="study-subtitle">다양한 센서와 부품들을 알아봐요!</p>
+        </header>
+
+        <div id="study-board" class="study-board">
+          <!-- 학습 카드들이 여기에 동적으로 추가됩니다 -->
+        </div>
+
+        <div class="study-controls">
+          <button id="start-game-btn" class="start-game-button">
+            🎮 실력 확인 게임 시작!
+          </button>
+        </div>
+      </section>
+
+      <!-- 드래그 앤 드롭 게임 섹션 (처음에는 숨김) -->
+      <section id="drag-game-section" class="drag-game-section hidden">
+        <header class="drag-game-header">
+          <h1>🎯 센서 매칭 게임</h1>
+          <p class="drag-game-subtitle">센서 그림을 설명 상자에 드래그해서 맞춰보세요!</p>
+        </header>
+
+        <!-- 게임 보드 (모눈종이 배경) -->
+        <div class="drag-game-board">
+          <!-- 설명 상자 영역 (상단) -->
+          <div class="drag-drop-zone">
+            <h2 class="drop-zone-title">📋 문제: 아래 설명에 맞는 센서를 드래그하세요</h2>
+            <div class="drop-zone-container" id="dropZoneContainer">
+              <!-- 드롭 영역들이 여기에 동적으로 추가됩니다 -->
+            </div>
+          </div>
+
+          <!-- 센서 이미지 영역 (하단) -->
+          <div class="drag-items-zone">
+            <h2 class="drag-items-title">🎲 센서 카드: 아래에서 선택하세요</h2>
+            <div class="drag-items-container" id="dragItemsContainer">
+              <!-- 드래그 가능한 센서 이미지들이 여기에 동적으로 추가됩니다 -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 피드백 메시지 -->
+        <div id="dragFeedback" class="drag-feedback hidden">
+          <span id="dragFeedbackText"></span>
+        </div>
+
+        <!-- 컨트롤 버튼 -->
+        <div class="drag-game-controls">
+          <button id="back-to-study-btn" class="back-to-study-button">
+            📖 공부하러 돌아가기
+          </button>
+          <button id="restart-drag-game-btn" class="restart-drag-game-button">
+            🔄 게임 다시하기
+          </button>
+        </div>
+
+        <!-- 결과 화면 -->
+        <div id="dragGameResult" class="drag-game-result hidden">
+          <div class="result-content">
+            <h2 class="result-title">🎉 미션 성공! 🎉</h2>
+            <p class="result-message">당신은 센서 박사!</p>
+            <p class="result-submessage">이제 배운 센서로 멋진 프로젝트를 만들어봐요!</p>
+            <div class="result-actions">
+              <a href="./ideas.html" class="next-page-button">
+                💡 아이디어 톡으로 가기
+              </a>
+              <button id="retryDragGameButton" class="retry-drag-game-button">
+                🔄 다시 도전하기
+              </button>
+              <button id="backToStudyFromDrag" class="back-to-study-button">
+                📖 공부하러 돌아가기
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- 센서 상세 정보 모달 -->
+    <div id="sensorModal" class="sensor-modal hidden">
+      <div class="sensor-modal-overlay"></div>
+      <div class="sensor-modal-box">
+        <button class="sensor-modal-close" id="sensorModalClose" aria-label="닫기">×</button>
+        <div class="sensor-modal-content">
+          <div class="sensor-modal-image">
+            <img id="sensorModalImage" src="" alt="" />
+          </div>
+          <h2 class="sensor-modal-name" id="sensorModalName"></h2>
+          <p class="sensor-modal-desc" id="sensorModalDesc"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI 챗봇 (오른쪽 하단 고정) -->
+    <div class="chatbot-container">
+      <button class="chatbot-toggle" id="chatbotToggle">
+        <span class="chatbot-icon">🤖</span>
+      </button>
+      
+      <div class="chatbot-window hidden" id="chatbotWindow">
+        <div class="chatbot-header">
+          <h3 id="chatbotTitle">📚 센서 도서관 사서</h3>
+          <div class="chatbot-header-actions">
+            <button class="chatbot-clear" id="chatbotClear" title="대화 지우기">🗑️</button>
+            <button class="chatbot-close" id="chatbotClose">×</button>
+          </div>
+        </div>
+        
+        <div class="chatbot-messages" id="chatbotMessages">
+          <!-- 환영 메시지는 chatbot.js에서 동적으로 추가됨 -->
+        </div>
+        
+        <div class="chatbot-input-container">
+          <div class="loading-indicator" id="chatbotLoading" style="display: none;">
+            <span>선생님이 생각 중이에요...</span>
+          </div>
+          <div class="chatbot-input-wrapper">
+            <input 
+              type="text" 
+              id="chatbotInput" 
+              placeholder="무엇이든 물어보세요..."
+              autocomplete="off"
+            />
+            <button id="chatbotSendButton" type="button">
+              전송
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/sensors.js"></script>
+  </body>
+</html>

@@ -4,98 +4,131 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src 'self' https://wokwi.com;">
-    <title>아두이노 & 브레드보드 실습</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src 'self' https://wokwi.com https://www.tinkercad.com;">
+    <link rel="stylesheet" href="/src/style.css" />
+    <title>Maker's Tutor - 미리보기 실험실</title>
   </head>
-  <body>
+  <body class="practice-page">
     <!-- 네비게이션 바 -->
     <nav class="top-navigation" id="topNavigation">
-      <a href="index.html" class="nav-item" data-stage="1">
+      <a href="./index.html" class="nav-brand" title="Maker's Tutor 홈">
+        🛠️ 💡 🚀 Maker's Tutor
+      </a>
+      <a href="./sensors.html" class="nav-item" data-stage="1">
         <span class="nav-number">1</span>
-        <span class="nav-label">아이디어</span>
+        <span class="nav-label">📚 센서 도서관</span>
       </a>
-      <a href="sencors.html" class="nav-item" data-stage="2">
+      <a href="./ideas.html" class="nav-item" data-stage="2">
         <span class="nav-number">2</span>
-        <span class="nav-label">센서 탐색</span>
+        <span class="nav-label">💡 아이디어 톡</span>
       </a>
-      <a href="practice.html" class="nav-item" data-stage="3">
+      <a href="./practice.html" class="nav-item active" data-stage="3">
         <span class="nav-number">3</span>
-        <span class="nav-label">실습하기</span>
+        <span class="nav-label">🧪 미리보기 실험실</span>
       </a>
     </nav>
     
     <div id="app">
-      <div class="practice-page">
-        <!-- 상단: 이론 학습 존 -->
-        <section class="practice-theory">
-          <div class="theory-header">
-            <h1>아두이노와 브레드보드 알아보기</h1>
-            <p>두 친구가 함께 힘을 합쳐 멋진 작품을 만들어요!</p>
-          </div>
-          <div class="theory-cards">
-            <article class="theory-card">
-              <img src="/sencors/arduino_uno.png" alt="아두이노" />
-              <div class="theory-text">
-                <h3>아두이노 UNO</h3>
-                <p>저는 로봇의 '뇌' 역할을 해요. 명령을 내리고 센서 값을 읽어오죠.</p>
-              </div>
-            </article>
-            <article class="theory-card">
-              <img src="/sencors/breadboard.png" alt="브레드보드" />
-              <div class="theory-text">
-                <h3>브레드보드</h3>
-                <p>저는 부품들을 연결해주는 '다리' 역할을 해요. 납땜 없이 구멍에 꽂기만 하면 전기가 통해요!</p>
-              </div>
-            </article>
-          </div>
-        </section>
+      <!-- 페이지 제목 -->
+      <header class="practice-page-header">
+        <h1 class="practice-page-title">🧪 미리보기 실험실</h1>
+        <p class="practice-page-subtitle">가상 시뮬레이터에서 안전하게 실험해봐요!</p>
+      </header>
 
-        <!-- 하단: 팅커캐드 시뮬레이션 존 -->
-        <section class="practice-lab">
-          <div class="lab-header">
-            <h2>미션: Wokwi에서 아두이노와 LED를 연결해보자!</h2>
-            <p class="tinkercad-instruction">
-              아래 화면에서 아두이노 시뮬레이션을 실행해보세요! 코드를 수정하고 실행 버튼을 눌러 LED가 켜지는지 확인해보세요.
-            </p>
+      <!-- 도구 소개 섹션 (인포그래픽 스타일) -->
+      <section class="tools-infographic-section">
+        <div class="tools-infographic-container">
+          <!-- 아두이노 카드 -->
+          <div class="tool-infographic-card">
+            <div class="tool-infographic-image">
+              <img src="/sencors/arduino_uno.png" alt="아두이노" onerror="this.style.display='none';" />
+            </div>
+            <h3 class="tool-infographic-title">아두이노</h3>
+            <p class="tool-infographic-desc">우리 프로젝트의 <strong>'두뇌'</strong> 역할을 해요! 여러분이 짠 코드를 기억하고 전기를 조절해서 센서들을 움직이게 만들죠.</p>
           </div>
 
-          <div class="tinkercad-container">
+          <!-- 브레드보드 카드 -->
+          <div class="tool-infographic-card">
+            <div class="tool-infographic-image">
+              <img src="/sencors/breadboard.png" alt="브레드보드" onerror="this.style.display='none';" />
+            </div>
+            <h3 class="tool-infographic-title">브레드보드</h3>
+            <p class="tool-infographic-desc">납땜 없이도 부품들을 서로 연결해주는 <strong>'연결 통로'</strong>예요. 전기가 잘 흐를 수 있게 부품들을 꽂아주기만 하면 돼요!</p>
+          </div>
+
+          <!-- Wokwi 카드 -->
+          <div class="tool-infographic-card">
+            <div class="tool-infographic-icon">🌐</div>
+            <h3 class="tool-infographic-title">Wokwi</h3>
+            <p class="tool-infographic-desc">실제 부품이 없어도 온라인에서 마음껏 실험해볼 수 있는 <strong>'가상 실험실'</strong>이에요. 실수로 연결을 잘못해도 망가지지 않으니 안심하고 도전하세요!</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 실험 미션 및 시뮬레이터 섹션 -->
+      <section class="practice-mission-section">
+        <!-- 미션 선택 탭 바 -->
+        <div class="mission-tabs-container">
+          <div class="mission-tabs" id="missionList">
+            <!-- 미션 버튼들이 여기에 동적으로 추가됩니다 -->
+          </div>
+        </div>
+
+        <!-- 미션 설명 및 시뮬레이터 -->
+        <div class="mission-content-wrapper">
+          <!-- 미션 설명창 -->
+          <div class="mission-description-box">
+            <h3 class="mission-description-title" id="guideTitle">미션을 선택해주세요</h3>
+            <div class="mission-description-content">
+              <div class="mission-description-item">
+                <h4 class="mission-description-label">🎯 목표</h4>
+                <p class="mission-description-text" id="guideObjective">왼쪽에서 미션을 선택하면 여기에 목표가 표시됩니다.</p>
+              </div>
+              <div class="mission-description-item">
+                <h4 class="mission-description-label">💡 힌트</h4>
+                <p class="mission-description-text" id="guideHint">힌트도 여기에 표시됩니다.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tinkercad 버튼 -->
+          <div class="tinkercad-button-container">
+            <a 
+              href="https://www.tinkercad.com/circuits" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="tinkercad-link-button"
+            >
+              🚀 더 많은 센서는? 틴커캐드 열기
+            </a>
+          </div>
+
+          <!-- Wokwi 시뮬레이터 -->
+          <div class="simulator-wrapper">
             <iframe
-              src="https://wokwi.com/projects/450009305951296513?output=1"
+              id="wokwiSimulator"
+              src="https://wokwi.com/projects/450645630910703617"
               width="100%"
-              height="600px"
-              style="border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"
+              height="800"
+              style="border: none; border-radius: 16px;"
               title="Arduino Simulator"
               allow="autoplay; camera; microphone; serial"
               sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
             ></iframe>
           </div>
-
-          <div class="practice-complete-section">
-            <button class="complete-course-button" id="completeCourseButton">
-              🎉 모든 수업 완료하기
-            </button>
-            <div class="completion-message hidden" id="completionMessage">
-              <h3>🎊 축하합니다! 🎊</h3>
-              <p>모든 수업을 완료하셨습니다!</p>
-              <p>이제 여러분도 멋진 전자제품을 만들 수 있어요!</p>
-            </div>
-          </div>
-        </section>
-      </div>
+        </div>
+      </section>
     </div>
 
     <!-- AI 챗봇 (오른쪽 하단 고정) -->
     <div class="chatbot-container">
-      <!-- 챗봇 아이콘 버튼 -->
       <button class="chatbot-toggle" id="chatbotToggle">
         <span class="chatbot-icon">🤖</span>
       </button>
       
-      <!-- 챗봇 창 -->
       <div class="chatbot-window hidden" id="chatbotWindow">
         <div class="chatbot-header">
-          <h3>🤖 아두이노 코딩 튜터</h3>
+          <h3 id="chatbotTitle">🧪 아두이노 코딩 전문가</h3>
           <div class="chatbot-header-actions">
             <button class="chatbot-clear" id="chatbotClear" title="대화 지우기">🗑️</button>
             <button class="chatbot-close" id="chatbotClose">×</button>
@@ -125,17 +158,23 @@
       </div>
     </div>
 
-    <!-- Reset 버튼 (개발자용) -->
-    <button class="reset-button" id="resetButton" title="진도 초기화">[Reset]</button>
-
     <script type="module" src="/src/practice.js"></script>
     <script>
-      // Reset 버튼 이벤트 리스너
-      document.getElementById('resetButton').addEventListener('click', () => {
-        localStorage.clear();
-        window.location.href = '/index.html';
+      // 네비게이션 active 클래스 자동 처리
+      document.addEventListener('DOMContentLoaded', () => {
+        const navItems = document.querySelectorAll('.nav-item');
+        const currentPath = window.location.pathname;
+        
+        navItems.forEach(item => {
+          if (currentPath.includes('practice.html')) {
+            if (item.getAttribute('href').includes('practice.html')) {
+              item.classList.add('active');
+            } else {
+              item.classList.remove('active');
+            }
+          }
+        });
       });
     </script>
   </body>
 </html>
-

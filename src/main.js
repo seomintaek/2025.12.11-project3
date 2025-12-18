@@ -119,7 +119,7 @@ function init() {
 
   // 다음 페이지 버튼
   nextPageButton.addEventListener('click', () => {
-    window.location.href = 'sencors.html';
+    window.location.href = './sensors.html';
   });
 
   // 새로운 대화 시작 버튼

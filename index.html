@@ -4,76 +4,158 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>아이디어 산출 - 발명 선생님과의 대화</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="/src/style.css" />
+    <title>Maker's Tutor - 메이커 교육 플랫폼</title>
   </head>
   <body>
     <!-- 네비게이션 바 -->
     <nav class="top-navigation" id="topNavigation">
-      <a href="index.html" class="nav-item" data-stage="1">
+      <a href="./index.html" class="nav-brand" title="Maker's Tutor 홈">
+        🛠️ 💡 🚀 Maker's Tutor
+      </a>
+      <a href="./sensors.html" class="nav-item" data-stage="1">
         <span class="nav-number">1</span>
-        <span class="nav-label">아이디어</span>
+        <span class="nav-label">📚 센서 도서관</span>
       </a>
-      <a href="sencors.html" class="nav-item" data-stage="2">
+      <a href="./ideas.html" class="nav-item" data-stage="2">
         <span class="nav-number">2</span>
-        <span class="nav-label">센서 탐색</span>
+        <span class="nav-label">💡 아이디어 톡</span>
       </a>
-      <a href="practice.html" class="nav-item" data-stage="3">
+      <a href="./practice.html" class="nav-item" data-stage="3">
         <span class="nav-number">3</span>
-        <span class="nav-label">실습하기</span>
+        <span class="nav-label">🧪 미리보기 실험실</span>
       </a>
     </nav>
     
     <div id="app">
-      <div class="container">
-        <header class="header">
-          <h1>🔬 발명 선생님과의 대화</h1>
-          <p class="subtitle">전자제품 아이디어를 함께 만들어요!</p>
-        </header>
-        
-        <div class="chat-container" id="chatContainer">
-          <!-- 채팅 메시지들이 여기에 동적으로 추가됩니다 -->
-        </div>
-        
-        <div class="input-container">
-          <div class="loading-indicator" id="loadingIndicator" style="display: none;">
-            <span class="loading-dots">선생님이 생각 중이에요</span>
-            <span class="dot">.</span>
-            <span class="dot">.</span>
-            <span class="dot">.</span>
-          </div>
-          <div class="input-wrapper">
-            <input 
-              type="text" 
-              id="userInput" 
-              placeholder="여기에 답변을 입력하세요..."
-              autocomplete="off"
-            />
-            <button id="sendButton" type="button">
-              <span>전송</span>
-            </button>
+      <!-- 메인 대시보드 (2단 분할) -->
+      <div class="main-dashboard">
+        <!-- 왼쪽 영역: 메인 콘텐츠 -->
+        <div class="main-content-area">
+          <div class="content-wrapper">
+            <!-- 로고/제목 -->
+            <div class="main-logo">
+              <h1 class="logo-title">Makers Tutor 🛠️</h1>
+            </div>
+            
+            <!-- 환영 메시지 -->
+            <div class="welcome-message">
+              <p class="welcome-text">오늘 기분은 어때요? 상상을 현실로 만들어봐요!</p>
+            </div>
+            
+            <!-- 시작하기 버튼 -->
+            <div class="start-button-container">
+              <a href="./sensors.html" class="start-button">
+                <span class="start-button-icon">🚀</span>
+                <span class="start-button-text">시작하기</span>
+                <span class="start-button-subtitle">센서를 배우고 프로젝트를 만들어봐요!</span>
+              </a>
+            </div>
           </div>
         </div>
-        
-        <div class="next-page-container" id="nextPageContainer" style="display: none;">
-          <button id="nextPageButton" class="next-page-button">
-            🎯 센서 탐색하러 가기 (2페이지)
-          </button>
-          <button id="newChatButton" class="new-chat-button">
-            💡 새로운 아이디어 만들기
-          </button>
+
+        <!-- 오른쪽 영역: 임베디드 챗봇 -->
+        <div class="dashboard-chat-section">
+          <div class="embedded-chatbot-container">
+            <div class="embedded-chatbot-header">
+              <div class="embedded-chatbot-header-left">
+                <h3>🍀 메이커스 프렌드</h3>
+                <p class="embedded-chatbot-subtitle">오늘 기분은 어때요?</p>
+              </div>
+              <button class="embedded-chatbot-clear" id="friendChatClear" title="대화 내용 지우기">🗑️</button>
+            </div>
+            
+            <div class="embedded-chatbot-messages" id="friendChatMessages">
+              <!-- 메시지들이 여기에 동적으로 추가됩니다 -->
+            </div>
+            
+            <div class="embedded-chatbot-input-container">
+              <div class="friend-loading-indicator" id="friendLoadingIndicator" style="display: none;">
+                <span>생각 중이에요</span>
+                <span class="dot">.</span>
+                <span class="dot">.</span>
+                <span class="dot">.</span>
+              </div>
+              <div class="friend-input-wrapper">
+                <input 
+                  type="text" 
+                  id="friendChatInput" 
+                  placeholder="오늘의 기분을 말해줘..."
+                  autocomplete="off"
+                />
+                <button id="friendChatSendButton" type="button">
+                  전송
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    
-    <!-- Reset 버튼 (개발자용) -->
-    <button class="reset-button" id="resetButton" title="진도 초기화">[Reset]</button>
-    
-    <script type="module" src="/src/main.js"></script>
-    <script>
-      // Reset 버튼 이벤트 리스너
-      document.getElementById('resetButton').addEventListener('click', () => {
-        localStorage.clear();
-        window.location.href = '/index.html';
+
+    <script type="module">
+      import { initChatbot } from '/src/chatbot.js';
+      
+      // 네비게이션 active 클래스 자동 처리
+      document.addEventListener('DOMContentLoaded', () => {
+        const navItems = document.querySelectorAll('.nav-item');
+        const currentPath = window.location.pathname;
+        
+        navItems.forEach(item => {
+          // 메인 페이지에서는 모든 메뉴 비활성화
+          if (currentPath === '/' || currentPath.endsWith('/') || currentPath.includes('index.html')) {
+            item.classList.remove('active');
+          }
+        });
+        
+        // 감성 케어 챗봇 초기화
+        const friendChatMessages = document.getElementById('friendChatMessages');
+        const friendChatInput = document.getElementById('friendChatInput');
+        const friendChatSendButton = document.getElementById('friendChatSendButton');
+        const friendLoadingIndicator = document.getElementById('friendLoadingIndicator');
+        const friendChatClear = document.getElementById('friendChatClear');
+        
+        if (friendChatMessages && friendChatInput && friendChatSendButton) {
+          initChatbot({
+            messagesContainer: friendChatMessages,
+            inputElement: friendChatInput,
+            sendButton: friendChatSendButton,
+            toggleButton: null, // 메인 페이지는 항상 열려있음
+            closeButton: null,
+            windowElement: null,
+            loadingIndicator: friendLoadingIndicator,
+            titleElement: null,
+            clearButton: friendChatClear
+          });
+          
+          // 대화 지우기 버튼 이벤트 (커스텀 로직)
+          if (friendChatClear) {
+            friendChatClear.addEventListener('click', () => {
+              if (confirm('대화 내용을 모두 지우고 처음으로 돌아갈까요?')) {
+                // 대화 내용 삭제
+                friendChatMessages.innerHTML = '';
+                
+                // 초기 상태 복구: 환영 메시지 다시 표시
+                const welcomeDiv = document.createElement('div');
+                welcomeDiv.className = 'chatbot-message ai-message';
+                welcomeDiv.innerHTML = `
+                  <div class="message-bubble">
+                    안녕! 오늘 학교 오는 길은 어땠어? 기분은 좀 어때? 🍀<br>
+                    오늘 하루가 어땠는지 나한테 이야기해줄래?
+                  </div>
+                `;
+                friendChatMessages.appendChild(welcomeDiv);
+                
+                // 스크롤을 맨 아래로
+                friendChatMessages.scrollTop = friendChatMessages.scrollHeight;
+                
+                // sessionStorage도 초기화 (메인 페이지는 저장 안 하지만 혹시 모르니)
+                sessionStorage.removeItem('chat_history_friend');
+              }
+            });
+          }
+        }
       });
     </script>
   </body>

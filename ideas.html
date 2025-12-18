@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/src/style.css" />
+    <title>Maker's Tutor - 아이디어 톡</title>
+  </head>
+  <body>
+    <!-- 네비게이션 바 -->
+    <nav class="top-navigation" id="topNavigation">
+      <a href="./index.html" class="nav-brand" title="Maker's Tutor 홈">
+        🛠️ 💡 🚀 Maker's Tutor
+      </a>
+      <a href="./sensors.html" class="nav-item" data-stage="1">
+        <span class="nav-number">1</span>
+        <span class="nav-label">📚 센서 도서관</span>
+      </a>
+      <a href="./ideas.html" class="nav-item" data-stage="2">
+        <span class="nav-number">2</span>
+        <span class="nav-label">💡 아이디어 톡</span>
+      </a>
+      <a href="./practice.html" class="nav-item" data-stage="3">
+        <span class="nav-number">3</span>
+        <span class="nav-label">🧪 미리보기 실험실</span>
+      </a>
+    </nav>
+    
+    <div id="app">
+      <!-- 아이디어 스케치 & 상담소 메인 컨테이너 -->
+      <div class="ideas-page-container">
+        <!-- 영역 A: 스케치북 (왼쪽) -->
+        <div class="sketch-section">
+          <header class="sketch-header">
+            <h1>🎨 상상을 현실로, 아이디어 톡</h1>
+            <p class="sketch-subtitle">그림과 말로 아이디어를 자유롭게 표현해보세요! ✏️</p>
+          </header>
+          
+          <!-- 도구함 (영역 B) -->
+          <div class="toolbar">
+            <div class="tool-group">
+              <span class="tool-label">그리기 도구:</span>
+              <button class="tool-button drawing-tool active" data-tool="pen" title="펜 (자유 곡선)">
+                <span class="tool-icon">✏️</span>
+                <span class="tool-name">펜</span>
+              </button>
+              <button class="tool-button drawing-tool" data-tool="line" title="직선">
+                <span class="tool-icon">📏</span>
+                <span class="tool-name">직선</span>
+              </button>
+              <button class="tool-button drawing-tool" data-tool="circle" title="원">
+                <span class="tool-icon">⭕</span>
+                <span class="tool-name">원</span>
+              </button>
+            </div>
+            
+            <div class="tool-group">
+              <span class="tool-label">펜 색상:</span>
+              <button class="tool-button pen-tool" data-color="#000000" data-tool="pen" title="검정 펜">
+                <span class="tool-icon">⚫</span>
+                <span class="tool-name">검정</span>
+              </button>
+              <button class="tool-button pen-tool" data-color="#0066ff" data-tool="pen" title="파랑 펜">
+                <span class="tool-icon">🔵</span>
+                <span class="tool-name">파랑</span>
+              </button>
+              <button class="tool-button pen-tool" data-color="#ff0000" data-tool="pen" title="빨강 펜">
+                <span class="tool-icon">🔴</span>
+                <span class="tool-name">빨강</span>
+              </button>
+            </div>
+            
+            <div class="tool-group">
+              <button class="tool-button drawing-tool" data-tool="eraser" title="지우개">
+                <span class="tool-icon">🧹</span>
+                <span class="tool-name">지우개</span>
+              </button>
+              <button class="tool-button" data-tool="clear" title="모두 지우기">
+                <span class="tool-icon">🗑️</span>
+                <span class="tool-name">모두 지우기</span>
+              </button>
+              <button class="tool-button" data-tool="save" title="저장하기">
+                <span class="tool-icon">💾</span>
+                <span class="tool-name">저장 💾</span>
+              </button>
+            </div>
+          </div>
+          
+          <!-- 캔버스 영역 -->
+          <div class="canvas-wrapper">
+            <canvas id="sketchCanvas" width="800" height="600"></canvas>
+          </div>
+        </div>
+        
+        <!-- 영역 C: 챗봇 (오른쪽) -->
+        <div class="chat-section">
+          <header class="chat-header">
+            <div class="chat-header-left">
+              <h2>💡 아이디어 뱅크</h2>
+              <p class="chat-subtitle">그린 그림을 설명하거나, 새로운 아이디어를 말해보세요! 💡</p>
+            </div>
+            <button class="chat-header-clear" id="ideaChatClear" title="대화 내용 지우기">🗑️</button>
+          </header>
+          
+          <div class="chat-container" id="chatContainer">
+            <!-- 채팅 메시지들이 여기에 동적으로 추가됩니다 -->
+          </div>
+          
+          <!-- 예시 키워드 블록 -->
+          <div class="keyword-suggestions">
+            <p class="keyword-label">💡 아이디어 예시:</p>
+            <div class="keyword-blocks">
+              <button class="keyword-block" data-keyword="🤖 쓰레기 먹는 로봇">🤖 쓰레기 먹는 로봇</button>
+              <button class="keyword-block" data-keyword="⏰ 절대 못 자는 알람 시계">⏰ 절대 못 자는 알람 시계</button>
+              <button class="keyword-block" data-keyword="🎁 비밀 보관 상자">🎁 비밀 보관 상자</button>
+              <button class="keyword-block" data-keyword="🐶 멍멍이 간식 기계">🐶 멍멍이 간식 기계</button>
+            </div>
+          </div>
+
+          <div class="input-container">
+            <div class="loading-indicator" id="loadingIndicator" style="display: none;">
+              <span class="loading-dots">선생님이 생각 중이에요</span>
+              <span class="dot">.</span>
+              <span class="dot">.</span>
+              <span class="dot">.</span>
+            </div>
+            <div class="input-wrapper">
+              <input 
+                type="text" 
+                id="userInput" 
+                placeholder="여기에 답변을 입력하세요..."
+                autocomplete="off"
+              />
+              <button id="sendButton" type="button">
+                <span>전송</span>
+              </button>
+            </div>
+          </div>
+          
+          <div class="next-page-container" id="nextPageContainer" style="display: none;">
+            <button id="nextPageButton" class="next-page-button">
+              🎯 미리보기 실험실로 가기
+            </button>
+            <button id="newChatButton" class="new-chat-button">
+              💡 새로운 아이디어 만들기
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <script type="module" src="/src/ideas.js"></script>
+    <script>
+      // 네비게이션 active 클래스 자동 처리
+      document.addEventListener('DOMContentLoaded', () => {
+        const navItems = document.querySelectorAll('.nav-item');
+        const currentPath = window.location.pathname;
+        
+        navItems.forEach(item => {
+          if (currentPath.includes('ideas.html')) {
+            if (item.getAttribute('href').includes('ideas.html')) {
+              item.classList.add('active');
+            } else {
+              item.classList.remove('active');
+            }
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
+
