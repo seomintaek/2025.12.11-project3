@@ -389,6 +389,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const sendButton = document.getElementById('sendButton');
   const loadingIndicator = document.getElementById('loadingIndicator');
   
+  const ideaChatClear = document.getElementById('ideaChatClear');
+  const keywordSuggestions = document.querySelector('.keyword-suggestions');
+  
   if (chatContainer && userInput && sendButton) {
     initChatbot({
       messagesContainer: chatContainer,
@@ -399,50 +402,27 @@ document.addEventListener('DOMContentLoaded', () => {
       windowElement: null,
       loadingIndicator: loadingIndicator,
       titleElement: null,
-      clearButton: null
+      clearButton: ideaChatClear
     });
   }
 
-  // 대화 지우기 버튼 이벤트
-  const ideaChatClear = document.getElementById('ideaChatClear');
-  const keywordSuggestions = document.querySelector('.keyword-suggestions');
-  
+  // 대화 지우기 버튼 추가 이벤트 (예시 키워드 블록 표시 등)
   if (ideaChatClear) {
+    const originalClearHandler = ideaChatClear.onclick;
     ideaChatClear.addEventListener('click', () => {
-      if (confirm('대화 내용을 모두 지우고 처음으로 돌아갈까요?')) {
-        // 대화 내용 삭제
-        chatContainer.innerHTML = '';
-        
-        // 초기 상태 복구: 환영 메시지 다시 표시
-        const persona = detectPersona();
-        if (persona && persona.welcomeMessage) {
-          const welcomeDiv = document.createElement('div');
-          welcomeDiv.className = 'chatbot-message ai-message';
-          welcomeDiv.innerHTML = `
-            <div class="message-bubble">
-              ${persona.welcomeMessage}
-            </div>
-          `;
-          chatContainer.appendChild(welcomeDiv);
-        }
-        
-        // 예시 키워드 블록 다시 표시 (숨겨져 있을 수 있으니)
-        if (keywordSuggestions) {
-          keywordSuggestions.style.display = 'block';
-        }
-        
-        // 다음 페이지 컨테이너 숨기기
-        const nextPageContainer = document.getElementById('nextPageContainer');
-        if (nextPageContainer) {
-          nextPageContainer.style.display = 'none';
-        }
-        
-        // 스크롤을 맨 아래로
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-        
-        // sessionStorage도 초기화
-        sessionStorage.removeItem('chat_history_idea');
+      // 예시 키워드 블록 다시 표시 (숨겨져 있을 수 있으니)
+      if (keywordSuggestions) {
+        keywordSuggestions.style.display = 'block';
       }
+      
+      // 다음 페이지 컨테이너 숨기기
+      const nextPageContainer = document.getElementById('nextPageContainer');
+      if (nextPageContainer) {
+        nextPageContainer.style.display = 'none';
+      }
+      
+      // localStorage도 초기화
+      localStorage.removeItem('chat_ideas');
     });
   }
 

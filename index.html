@@ -60,7 +60,7 @@
           <div class="embedded-chatbot-container">
             <div class="embedded-chatbot-header">
               <div class="embedded-chatbot-header-left">
-                <h3>🍀 메이커스 프렌드</h3>
+                <h3>🍀 감성 케어 봇</h3>
                 <p class="embedded-chatbot-subtitle">오늘 기분은 어때요?</p>
               </div>
               <button class="embedded-chatbot-clear" id="friendChatClear" title="대화 내용 지우기">🗑️</button>
@@ -141,8 +141,7 @@
                 welcomeDiv.className = 'chatbot-message ai-message';
                 welcomeDiv.innerHTML = `
                   <div class="message-bubble">
-                    안녕! 오늘 학교 오는 길은 어땠어? 기분은 좀 어때? 🍀<br>
-                    오늘 하루가 어땠는지 나한테 이야기해줄래?
+                    안녕! 메이커스 튜터에 온 걸 환영해. 😊 본격적으로 시작하기 전에, 오늘 네 기분은 좀 어때?
                   </div>
                 `;
                 friendChatMessages.appendChild(welcomeDiv);
@@ -150,8 +149,8 @@
                 // 스크롤을 맨 아래로
                 friendChatMessages.scrollTop = friendChatMessages.scrollHeight;
                 
-                // sessionStorage도 초기화 (메인 페이지는 저장 안 하지만 혹시 모르니)
-                sessionStorage.removeItem('chat_history_friend');
+                // localStorage도 초기화
+                localStorage.removeItem('chat_main');
               }
             });
           }
