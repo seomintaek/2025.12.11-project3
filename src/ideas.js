@@ -407,22 +407,24 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 대화 지우기 버튼 추가 이벤트 (예시 키워드 블록 표시 등)
+  // chatbot.js의 clearHistory가 먼저 실행된 후 이 로직이 실행되도록 함
   if (ideaChatClear) {
-    const originalClearHandler = ideaChatClear.onclick;
+    // 기존 이벤트 리스너에 추가 로직을 연결
+    const originalClickHandler = ideaChatClear.onclick;
     ideaChatClear.addEventListener('click', () => {
-      // 예시 키워드 블록 다시 표시 (숨겨져 있을 수 있으니)
-      if (keywordSuggestions) {
-        keywordSuggestions.style.display = 'block';
-      }
-      
-      // 다음 페이지 컨테이너 숨기기
-      const nextPageContainer = document.getElementById('nextPageContainer');
-      if (nextPageContainer) {
-        nextPageContainer.style.display = 'none';
-      }
-      
-      // localStorage도 초기화
-      localStorage.removeItem('chat_ideas');
+      // chatbot.js의 clearHistory가 실행된 후 추가 로직 실행
+      setTimeout(() => {
+        // 예시 키워드 블록 다시 표시
+        if (keywordSuggestions) {
+          keywordSuggestions.style.display = 'block';
+        }
+        
+        // 다음 페이지 컨테이너 숨기기
+        const nextPageContainer = document.getElementById('nextPageContainer');
+        if (nextPageContainer) {
+          nextPageContainer.style.display = 'none';
+        }
+      }, 100);
     });
   }
 

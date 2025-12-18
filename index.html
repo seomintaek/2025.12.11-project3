@@ -129,31 +129,8 @@
             clearButton: friendChatClear
           });
           
-          // 대화 지우기 버튼 이벤트 (커스텀 로직)
-          if (friendChatClear) {
-            friendChatClear.addEventListener('click', () => {
-              if (confirm('대화 내용을 모두 지우고 처음으로 돌아갈까요?')) {
-                // 대화 내용 삭제
-                friendChatMessages.innerHTML = '';
-                
-                // 초기 상태 복구: 환영 메시지 다시 표시
-                const welcomeDiv = document.createElement('div');
-                welcomeDiv.className = 'chatbot-message ai-message';
-                welcomeDiv.innerHTML = `
-                  <div class="message-bubble">
-                    안녕! 메이커스 튜터에 온 걸 환영해. 😊 본격적으로 시작하기 전에, 오늘 네 기분은 좀 어때?
-                  </div>
-                `;
-                friendChatMessages.appendChild(welcomeDiv);
-                
-                // 스크롤을 맨 아래로
-                friendChatMessages.scrollTop = friendChatMessages.scrollHeight;
-                
-                // localStorage도 초기화
-                localStorage.removeItem('chat_main');
-              }
-            });
-          }
+          // 대화 지우기 버튼 이벤트는 chatbot.js의 clearHistory에서 처리됨
+          // 추가 커스텀 로직이 필요하면 여기에 작성
         }
       });
     </script>

@@ -10,14 +10,14 @@ const PERSONAS = {
     systemPrompt: `너는 학생의 다정한 단짝 친구야. 이름은 "감성 케어 봇"이고, 프로젝트 시작 전에 학생의 기분을 물어보고 공감해주는 역할을 해.
 
 중요한 가이드라인:
-1. 첫 인사는 "안녕! 메이커스 튜터에 온 걸 환영해. 😊 본격적으로 시작하기 전에, 오늘 네 기분은 좀 어때?" 처럼 가볍고 다정하게 시작해.
+1. 첫 인사는 "안녕! 메이커스 튜터에 온 걸 환영해. 😊 본격적으로 시작하기 전에, **오늘 네 기분은 좀 어때?**" 처럼 가볍고 다정하게 시작해.
 2. 기술적인 이야기는 먼저 꺼내지 마. 일상적인 대화에 집중해.
 3. 사용자가 "우울해"라고 하면 "아, 힘들었구나. 그런 기분도 괜찮아. 나도 네 편이야. 오늘은 조금 쉬면서 시작해도 돼. 🌈"처럼 위로하고 공감해줘.
 4. 사용자가 "신나"라고 하면 "와! 그 기분 좋은 에너지로 오늘 멋진 걸 만들어보자! 🚀"처럼 격려하고 학습으로 자연스럽게 유도해줘.
 5. 이모지를 많이 사용해서(🌈, ✨, 🍀, 💫, 🌟) 밝고 따뜻한 분위기를 만들어줘.
 6. 대화가 충분히 무르익으면 자연스럽게 "자, 이제 기분 좋게 발명하러 가볼까? 아래 메뉴에서 원하는 걸 골라봐! 🚀"라고 안내해줘.
 7. 항상 긍정적이고 따뜻한 톤으로 대화해.`,
-    welcomeMessage: "안녕! 메이커스 튜터에 온 걸 환영해. 😊 본격적으로 시작하기 전에, 오늘 네 기분은 좀 어때?",
+    welcomeMessage: "안녕! 메이커스 튜터에 온 걸 환영해. 😊 본격적으로 시작하기 전에, **오늘 네 기분은 좀 어때?**",
     title: '🍀 감성 케어 봇',
     storageKey: 'chat_main'
   },
@@ -33,7 +33,7 @@ const PERSONAS = {
 4. 설명은 중학생이 이해하기 쉽게, 친절하고 격려하는 톤으로 대화해.
 5. 드래그 게임에 대한 힌트도 제공해줘. 학생이 막혔을 때 도움을 줄 수 있어.
 6. "기본 12종 외에도 세상에는 정말 신기한 센서가 많아! 궁금한 센서 이름을 말해봐."라는 안내를 자연스럽게 해줘.`,
-    welcomeMessage: "안녕? 나는 센서 박사란다. 12가지 센서나 다른 신기한 센서들에 대해 무엇이든 물어보렴!",
+    welcomeMessage: "안녕? 나는 **센서 박사**란다. 12가지 센서나 다른 신기한 센서들에 대해 무엇이든 물어보렴!",
     title: '📚 센서 박사',
     storageKey: 'chat_sensors'
   },
@@ -50,7 +50,7 @@ const PERSONAS = {
 5. 창의적이고 실현 가능한 아이디어를 격려하고, 센서 조합을 제안해줘.
 6. 하단 예시 블록(칩)을 활용해 "쓰레기통", "알람" 같은 키워드를 받아 구체적 구현법 제시.
 7. 친절하고 열정적인 톤으로 대화해.`,
-    welcomeMessage: "반가워! 나는 아이디어 뱅크야. 센서들로 어떤 멋진 물건을 만들고 싶니?",
+    welcomeMessage: "반가워! 나는 **아이디어 뱅크**야. 센서들로 어떤 멋진 물건을 만들고 싶니?",
     title: '💡 아이디어 뱅크',
     storageKey: 'chat_ideas'
   },
@@ -68,7 +68,7 @@ const PERSONAS = {
 6. 학생이 막혔을 때는 "어떤 부분이 어려운지 말해봐", "에러 메시지가 뭐라고 나와?"처럼 구체적인 질문을 해.
 7. 실험 중 안전 수칙을 강조해줘.
 8. 친절하고 격려하는 톤으로 대화하되, 학생이 스스로 이해할 수 있도록 단계별로 안내해.`,
-    welcomeMessage: "어서 와, 여기는 실험실이야. 나는 코딩 선생님이고. 회로 연결이나 코드가 어려우면 언제든 물어봐!",
+    welcomeMessage: "어서 와, 여기는 실험실이야. 나는 **코딩 선생님**이고. 회로 연결이나 코드가 어려우면 언제든 물어봐!",
     title: '🧪 아두이노 코딩 쌤',
     storageKey: 'chat_practice'
   }
@@ -217,16 +217,20 @@ function renderHistory(container) {
 
 /**
  * 대화 내역을 초기화합니다.
+ * @param {HTMLElement} container - 메시지 컨테이너 (선택사항, 없으면 전역 messagesContainer 사용)
+ * @param {Function} onClear - 초기화 후 실행할 콜백 함수 (선택사항)
  */
-function clearHistory(container) {
+export function clearHistory(container, onClear) {
   chatbotHistory = [];
   if (storageKey) {
     localStorage.removeItem(storageKey);
   }
   
+  const targetContainer = container || messagesContainer;
+  
   // UI 초기화
-  if (container) {
-    container.innerHTML = '';
+  if (targetContainer) {
+    targetContainer.innerHTML = '';
     
     // 환영 메시지 다시 추가
     const welcomeDiv = document.createElement('div');
@@ -236,10 +240,15 @@ function clearHistory(container) {
         ${currentPersona.welcomeMessage}
       </div>
     `;
-    container.appendChild(welcomeDiv);
+    targetContainer.appendChild(welcomeDiv);
     
     // 스크롤을 맨 아래로
-    container.scrollTop = container.scrollHeight;
+    targetContainer.scrollTop = targetContainer.scrollHeight;
+  }
+  
+  // 추가 콜백 실행
+  if (onClear && typeof onClear === 'function') {
+    onClear();
   }
 }
 
@@ -314,6 +323,13 @@ export function initChatbot(options) {
       }
     });
   }
+  
+  // clearHistory 함수를 전역으로 export (다른 모듈에서 사용 가능)
+  window.clearChatbotHistory = (onClear) => {
+    if (confirm('대화 내용을 모두 지우고 처음으로 돌아갈까요?')) {
+      clearHistory(container, onClear);
+    }
+  };
   
   // 이벤트 리스너 등록
   if (toggleButton) {

@@ -512,23 +512,23 @@ body.practice-page {
 }
 
 .embedded-chatbot-messages::-webkit-scrollbar-track {
-  background: rgba(255, 159, 67, 0.1);
+  background: rgba(37, 99, 235, 0.1);
   border-radius: 4px;
 }
 
 .embedded-chatbot-messages::-webkit-scrollbar-thumb {
-  background: var(--accent-color);
+  background: var(--primary);
   border-radius: 4px;
 }
 
 .embedded-chatbot-messages::-webkit-scrollbar-thumb:hover {
-  background: #ff6b35;
+  background: var(--secondary);
 }
 
 .embedded-chatbot-input-container {
   padding: 20px 24px;
   background: rgba(255, 255, 255, 0.8);
-  border-top: 2px solid rgba(255, 159, 67, 0.3);
+  border-top: 2px solid rgba(37, 99, 235, 0.3);
   flex-shrink: 0;
   border-radius: 0 0 20px 20px;
 }
@@ -539,11 +539,11 @@ body.practice-page {
   justify-content: center;
   padding: 10px;
   margin-bottom: 10px;
-  background: rgba(255, 159, 67, 0.2);
+  background: rgba(37, 99, 235, 0.2);
   border-radius: 20px;
   font-size: 13px;
-  color: var(--accent-color);
-  box-shadow: 0 2px 8px rgba(255, 159, 67, 0.2);
+  color: var(--primary);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
 }
 
 .friend-loading-indicator .dot {
@@ -572,7 +572,7 @@ body.practice-page {
 #friendChatInput {
   flex: 1;
   padding: 12px 16px;
-  border: 2px solid var(--accent-color);
+  border: 2px solid var(--primary);
   border-radius: 20px;
   font-size: 14px;
   font-family: inherit;
@@ -583,24 +583,24 @@ body.practice-page {
 }
 
 #friendChatInput:focus {
-  border-color: #ff6b35;
-  box-shadow: 0 0 0 4px rgba(255, 159, 67, 0.2);
+  border-color: var(--secondary);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
   background: var(--white);
 }
 
 #friendChatInput:disabled {
-  background: rgba(255, 159, 67, 0.2);
+  background: rgba(37, 99, 235, 0.2);
   cursor: not-allowed;
   opacity: 0.7;
 }
 
 #friendChatInput::placeholder {
-  color: var(--accent-color);
+  color: var(--primary);
 }
 
 #friendChatSendButton {
   padding: 12px 24px;
-  background: linear-gradient(135deg, var(--accent-color) 0%, #ff6b35 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
   color: var(--white);
   border: none;
   border-radius: 20px;
@@ -608,13 +608,13 @@ body.practice-page {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(255, 159, 67, 0.4);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
   font-family: inherit;
 }
 
 #friendChatSendButton:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(255, 159, 67, 0.5);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.5);
 }
 
 #friendChatSendButton:active:not(:disabled) {
@@ -649,11 +649,11 @@ body.practice-page {
   line-height: 1.6;
   word-wrap: break-word;
   white-space: pre-wrap;
-  box-shadow: 0 2px 8px rgba(255, 159, 67, 0.3);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
 }
 
 .embedded-chatbot-messages .chatbot-message.user-message .message-bubble {
-  background: linear-gradient(135deg, var(--accent-color) 0%, #ff6b35 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
   color: var(--white);
   border-radius: 20px 20px 4px 20px;
 }
@@ -662,7 +662,7 @@ body.practice-page {
   background: rgba(255, 255, 255, 0.95);
   color: var(--text-dark);
   border-radius: 20px 20px 20px 4px;
-  border: 1px solid rgba(255, 159, 67, 0.3);
+  border: 1px solid rgba(37, 99, 235, 0.3);
 }
 
 @keyframes fadeIn {
@@ -720,7 +720,7 @@ body.practice-page {
   width: 100%;
     min-height: 500px;
     border-left: none;
-    border-top: 2px solid var(--accent-color);
+    border-top: 2px solid var(--primary);
   }
 
   .embedded-chatbot-container {
@@ -792,7 +792,7 @@ body.practice-page {
 
 .button {
   padding: 12px 24px;
-  background: linear-gradient(135deg, var(--accent-color) 0%, #ff6b35 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
   color: var(--white);
   border: none;
   border-radius: 16px;
@@ -880,14 +880,15 @@ body.practice-page {
 .drag-game-board {
   background: #F0F4F8;
   background-image: 
-    linear-gradient(rgba(37, 99, 235, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(37, 99, 235, 0.1) 1px, transparent 1px);
+    linear-gradient(rgba(37, 99, 235, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37, 99, 235, 0.15) 1px, transparent 1px);
   background-size: 20px 20px;
   border: 3px solid var(--primary);
   border-radius: var(--radius-md);
   padding: 32px;
   margin: 24px 0;
   box-shadow: var(--shadow-hover);
+  position: relative;
 }
 
 .drag-game-section.hidden {
@@ -940,7 +941,7 @@ body.practice-page {
 
 .drop-zone {
   background: var(--surface);
-  border: 2px dashed var(--primary);
+  border: 3px dashed var(--primary);
   border-radius: var(--radius-md);
   padding: 24px;
   min-height: 180px;
@@ -952,8 +953,8 @@ body.practice-page {
   align-items: center;
   justify-content: center;
   background-image: 
-    repeating-linear-gradient(0deg, transparent, transparent 9px, rgba(37, 99, 235, 0.05) 9px, rgba(37, 99, 235, 0.05) 10px),
-    repeating-linear-gradient(90deg, transparent, transparent 9px, rgba(37, 99, 235, 0.05) 9px, rgba(37, 99, 235, 0.05) 10px);
+    repeating-linear-gradient(0deg, transparent, transparent 9px, rgba(37, 99, 235, 0.08) 9px, rgba(37, 99, 235, 0.08) 10px),
+    repeating-linear-gradient(90deg, transparent, transparent 9px, rgba(37, 99, 235, 0.08) 9px, rgba(37, 99, 235, 0.08) 10px);
   background-size: 20px 20px;
 }
 
@@ -980,11 +981,12 @@ body.practice-page {
 
 .drop-zone.drag-over {
   border-color: var(--primary);
-  border-width: 3px;
+  border-width: 4px;
   background: rgba(37, 99, 235, 0.15);
   transform: scale(1.03);
   border-style: dashed;
-  box-shadow: 0 0 20px rgba(37, 99, 235, 0.3);
+  box-shadow: 0 0 20px rgba(37, 99, 235, 0.4);
+  border-image: repeating-linear-gradient(45deg, var(--primary), var(--primary) 10px, transparent 10px, transparent 20px) 1;
 }
 
 .drop-zone.drag-over .drop-zone-placeholder {
@@ -1456,7 +1458,7 @@ body.practice-page {
 }
 
 .sensor-modal-box::-webkit-scrollbar-thumb:hover {
-  background: #ff6b35;
+  background: var(--secondary);
 }
 
 @keyframes modalScaleIn {
@@ -1647,7 +1649,7 @@ body.practice-page {
 
 .progress-bar-fill {
   height: 100%;
-  background: linear-gradient(135deg, var(--accent-color) 0%, #ff6b35 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
   border-radius: 10px;
   transition: width 0.4s ease;
   box-shadow: 0 2px 8px var(--shadow-soft);
@@ -1854,7 +1856,7 @@ body.practice-page {
   font-size: 18px;
   font-weight: 600;
   color: var(--white);
-  background: linear-gradient(135deg, var(--accent-color) 0%, #ff6b35 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
   border: none;
   border-radius: 20px;
   cursor: pointer;
@@ -2191,7 +2193,7 @@ body.practice-page {
   font-size: 16px;
   font-weight: 600;
   color: var(--white);
-  background: linear-gradient(135deg, var(--accent-color) 0%, #ff6b35 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
   border: none;
   border-radius: 20px;
   cursor: pointer;
@@ -2206,7 +2208,7 @@ body.practice-page {
 
 .restart-button {
   padding: 14px 32px;
-  background: linear-gradient(135deg, var(--accent-color) 0%, #ff6b35 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
   color: var(--white);
   border: none;
   border-radius: 16px;
@@ -2281,7 +2283,7 @@ body.practice-page {
 }
 
 .next-page-button {
-  background: linear-gradient(135deg, var(--accent-color) 0%, #ff6b35 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
   color: var(--white);
   text-decoration: none;
   display: inline-block;
@@ -2787,7 +2789,7 @@ a.next-page-button {
 
 .start-game-mode-button {
   padding: 18px 48px;
-  background: linear-gradient(135deg, var(--accent-color) 0%, #ff6b35 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
   color: var(--white);
   border: none;
   border-radius: 20px;
@@ -3379,7 +3381,7 @@ a.next-page-button {
 }
 
 .mission-board-left::-webkit-scrollbar-thumb:hover {
-  background: #ff6b35;
+  background: var(--secondary);
 }
 
 .mission-board-right {
@@ -3510,7 +3512,7 @@ a.next-page-button {
 }
 
 .mission-guide::-webkit-scrollbar-thumb:hover {
-  background: #ff6b35;
+  background: var(--secondary);
 }
 
 /* 도구 아이콘 */
@@ -3607,20 +3609,20 @@ a.next-page-button {
   right: 20px;
   z-index: 100;
   padding: 10px 16px;
-  background: linear-gradient(135deg, var(--accent-color) 0%, #ff6b35 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
   color: var(--white);
   text-decoration: none;
   border-radius: 20px;
   font-size: 13px;
   font-weight: 600;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(255, 159, 67, 0.4);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
   display: inline-block;
 }
 
 .tinkercad-floating-button:hover {
   transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 6px 20px rgba(255, 159, 67, 0.6);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
 }
 
 .simulator-container {
@@ -3821,7 +3823,7 @@ a.next-page-button {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent-color) 0%, #ff6b35 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
   border: none;
   color: var(--white);
   font-size: 28px;
@@ -3971,7 +3973,7 @@ a.next-page-button {
 
 #chatbotSendButton {
   padding: 10px 20px;
-  background: linear-gradient(135deg, var(--accent-color) 0%, #ff6b35 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
   color: var(--white);
   border: none;
   border-radius: 16px;
