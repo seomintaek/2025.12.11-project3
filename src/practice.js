@@ -119,6 +119,8 @@ function initNavigation() {
 // ============================================
 
 function initChatbotModule() {
+  console.log('[마지막 실험실] 챗봇 초기화 시작');
+  
   const chatbotMessages = document.getElementById('chatbotMessages');
   const chatbotInput = document.getElementById('chatbotInput');
   const chatbotSendButton = document.getElementById('chatbotSendButton');
@@ -127,7 +129,21 @@ function initChatbotModule() {
   const chatbotWindow = document.getElementById('chatbotWindow');
   const chatbotLoading = document.getElementById('chatbotLoading');
   
-  if (chatbotMessages && chatbotInput && chatbotSendButton && chatbotToggle && chatbotClose && chatbotWindow) {
+  // 필수 요소 확인 및 로그
+  console.log('[마지막 실험실] DOM 요소 확인:', {
+    chatbotMessages: !!chatbotMessages,
+    chatbotInput: !!chatbotInput,
+    chatbotSendButton: !!chatbotSendButton,
+    chatbotToggle: !!chatbotToggle,
+    chatbotClose: !!chatbotClose,
+    chatbotWindow: !!chatbotWindow,
+    chatbotLoading: !!chatbotLoading
+  });
+  
+  // 필수 요소만 체크 (선택적 요소는 null 허용)
+  if (chatbotMessages && chatbotInput && chatbotSendButton) {
+    console.log('[마지막 실험실] 챗봇 초기화 실행');
+    
     initChatbot({
       messagesContainer: chatbotMessages,
       inputElement: chatbotInput,
@@ -151,6 +167,14 @@ function initChatbotModule() {
 8. 친절하고 격려하는 톤으로 대화하되, 학생이 스스로 이해할 수 있도록 단계별로 안내해.`,
       initialMessage: "어서 와, 여기는 실험실이야. 나는 **코딩 선생님**이고. 회로 연결이나 코드가 어려우면 언제든 물어봐!",
       storageKey: 'chat_history_PRACTICE'
+    });
+    
+    console.log('[마지막 실험실] 챗봇 초기화 완료');
+  } else {
+    console.error('[마지막 실험실] 필수 DOM 요소가 없습니다:', {
+      chatbotMessages: !!chatbotMessages,
+      chatbotInput: !!chatbotInput,
+      chatbotSendButton: !!chatbotSendButton
     });
   }
 }

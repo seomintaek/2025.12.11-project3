@@ -376,18 +376,24 @@ export function initChatbot(options) {
   }
   
   if (sendButton) {
-    sendButton.addEventListener('click', () => sendMessage({
-      inputElement,
-      sendButton,
-      messagesContainer: container,
-      loadingIndicator
-    }));
+    sendButton.addEventListener('click', () => {
+      console.log('[마지막 실험실] 전송 버튼 클릭됨');
+      sendMessage({
+        inputElement,
+        sendButton,
+        messagesContainer: container,
+        loadingIndicator
+      });
+    });
+  } else {
+    console.warn('[마지막 실험실] sendButton이 없습니다');
   }
   
   if (inputElement) {
     inputElement.addEventListener('keypress', (e) => {
       if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
+        console.log('[마지막 실험실] 엔터키 입력됨');
         sendMessage({
           inputElement,
           sendButton,
@@ -396,6 +402,8 @@ export function initChatbot(options) {
         });
       }
     });
+  } else {
+    console.warn('[마지막 실험실] inputElement가 없습니다');
   }
 }
 
@@ -415,6 +423,8 @@ function toggleChatbot(windowElement, inputElement) {
  * 메시지를 전송하고 AI 응답을 받습니다.
  */
 async function sendMessage(options) {
+  console.log('[마지막 실험실] sendMessage 함수 호출됨');
+  
   const {
     inputElement,
     sendButton,
@@ -422,9 +432,19 @@ async function sendMessage(options) {
     loadingIndicator
   } = options;
   
-  const message = inputElement.value.trim();
+  // 입력 요소 확인
+  if (!inputElement) {
+    console.error('[마지막 실험실] inputElement가 없습니다');
+    return;
+  }
   
-  if (!message) return;
+  const message = inputElement.value.trim();
+  console.log('[마지막 실험실] 입력된 메시지:', message);
+  
+  if (!message) {
+    console.warn('[마지막 실험실] 빈 메시지입니다');
+    return;
+  }
   
   // 사용자 메시지 추가
   addMessage(container, 'user', message);
@@ -439,7 +459,9 @@ async function sendMessage(options) {
   // 입력창 초기화 및 비활성화
   inputElement.value = '';
   inputElement.disabled = true;
-  sendButton.disabled = true;
+  if (sendButton) {
+    sendButton.disabled = true;
+  }
   
   // 로딩 표시
   if (loadingIndicator) {
@@ -448,16 +470,20 @@ async function sendMessage(options) {
   
   // AI 응답 받기
   try {
+    console.log('[마지막 실험실] AI 응답 요청 시작');
     await getAIResponse(container);
+    console.log('[마지막 실험실] AI 응답 도착 완료');
   } catch (error) {
-    console.error('Error:', error);
+    console.error('[마지막 실험실] AI 응답 오류:', error);
     addMessage(container, 'ai', '죄송해요. 오류가 발생했어요. 다시 시도해주세요. 😢');
   } finally {
     if (loadingIndicator) {
       loadingIndicator.style.display = 'none';
     }
     inputElement.disabled = false;
-    sendButton.disabled = false;
+    if (sendButton) {
+      sendButton.disabled = false;
+    }
     inputElement.focus();
   }
 }
@@ -502,11 +528,15 @@ async function getAIResponse(container) {
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
+    console.error('[마지막 실험실] API 요청 실패:', errorData);
     throw new Error(errorData.error?.message || 'API 요청 실패');
   }
 
   const data = await response.json();
+  console.log('[마지막 실험실] 응답 도착:', data);
+  
   const aiMessage = data.choices[0].message.content;
+  console.log('[마지막 실험실] AI 메시지 내용:', aiMessage);
   
   // AI 응답 추가
   addMessage(container, 'ai', aiMessage);
