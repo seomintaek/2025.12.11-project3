@@ -4,11 +4,16 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src 'self' https://wokwi.com https://www.tinkercad.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src 'self' https://wokwi.com https://www.tinkercad.com; connect-src 'self' https://api.openai.com;">
     <link rel="stylesheet" href="/src/style.css" />
     <title>Maker's Tutor - 미리보기 실험실</title>
   </head>
   <body class="practice-page">
+    <!-- API Key 상태 표시줄 (디버깅용) -->
+    <div class="api-status-bar" id="apiStatusBar">
+      <span id="apiStatusText">로딩 중...</span>
+    </div>
+
     <!-- 네비게이션 바 -->
     <nav class="top-navigation" id="topNavigation">
       <a href="./index.html" class="nav-brand" title="Maker's Tutor 홈">
@@ -120,39 +125,37 @@
       </section>
     </div>
 
-    <!-- AI 챗봇 (오른쪽 하단 고정) -->
-    <div class="chatbot-container">
-      <button class="chatbot-toggle" id="chatbotToggle">
+    <!-- 아두이노 전문가 챗봇 -->
+    <div class="chatbot-container" id="chatbotContainer">
+      <button class="chatbot-toggle" id="chatbotToggle" title="챗봇 열기">
         <span class="chatbot-icon">🤖</span>
       </button>
       
       <div class="chatbot-window hidden" id="chatbotWindow">
         <div class="chatbot-header">
-          <h3 id="chatbotTitle">🧪 아두이노 코딩 쌤</h3>
+          <h3 class="chatbot-title">🤖 아두이노 전문가</h3>
           <div class="chatbot-header-actions">
             <button class="chatbot-clear" id="chatbotClear" title="대화 지우기">🗑️</button>
-            <button class="chatbot-close" id="chatbotClose">×</button>
+            <button class="chatbot-close" id="chatbotClose" title="챗봇 닫기">✖</button>
           </div>
         </div>
         
         <div class="chatbot-messages" id="chatbotMessages">
-          <!-- 환영 메시지는 chatbot.js에서 동적으로 추가됨 -->
+          <!-- 메시지들이 여기에 동적으로 추가됩니다 -->
         </div>
         
         <div class="chatbot-input-container">
-          <div class="loading-indicator" id="chatbotLoading" style="display: none;">
-            <span>선생님이 생각 중이에요...</span>
+          <div class="chatbot-loading" id="chatbotLoading" style="display: none;">
+            <span>생각 중...</span>
           </div>
           <div class="chatbot-input-wrapper">
             <input 
               type="text" 
               id="chatbotInput" 
-              placeholder="무엇이든 물어보세요..."
+              placeholder="회로 연결이나 코드 오류를 물어보세요..."
               autocomplete="off"
             />
-            <button id="chatbotSendButton" type="button">
-              전송
-            </button>
+            <button id="chatbotSendButton" type="button">전송</button>
           </div>
         </div>
       </div>

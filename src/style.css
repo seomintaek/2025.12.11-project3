@@ -54,6 +54,43 @@ body.practice-page {
 }
 
 /* ============================================
+   API Key 상태 표시줄 (디버깅용)
+   ============================================ */
+
+.api-status-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  z-index: 1001;
+  padding: 0 12px;
+  transition: all 0.3s ease;
+}
+
+.api-status-connected {
+  background: rgba(34, 197, 94, 0.15);
+  color: #16a34a;
+  border-bottom: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.api-status-disconnected {
+  background: rgba(239, 68, 68, 0.15);
+  color: #dc2626;
+  border-bottom: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* 네비게이션 바가 API 상태 표시줄 아래에 위치하도록 조정 */
+.top-navigation {
+  top: 24px;
+}
+
+/* ============================================
    네비게이션 바
    ============================================ */
 
@@ -3843,12 +3880,17 @@ a.next-page-button {
   right: 0;
   width: 400px;
   height: 600px;
-  background: #bacee0; /* 카카오톡 하늘색 배경 */
-  border-radius: 20px;
+  background: var(--bg-color);
+  background-image: 
+    linear-gradient(rgba(37, 99, 235, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37, 99, 235, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+  border-radius: var(--radius-lg);
   box-shadow: 0 8px 32px var(--shadow-hover);
   display: flex;
-    flex-direction: column;
+  flex-direction: column;
   overflow: hidden;
+  border: 2px solid rgba(37, 99, 235, 0.1);
 }
 
 .chatbot-header {
@@ -3890,7 +3932,7 @@ a.next-page-button {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  background: #bacee0; /* 카카오톡 하늘색 배경 */
+  background: transparent;
 }
 
 /* 카카오톡 스타일 메시지 말풍선 */
@@ -3920,16 +3962,18 @@ a.next-page-button {
 }
 
 .chatbot-message.user-message .message-bubble {
-  background: #fee500; /* 카카오톡 노란색 */
-  color: #000;
+  background: linear-gradient(135deg, #2563EB 0%, #3B82F6 100%);
+  color: var(--white);
   border-bottom-right-radius: 4px;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
 }
 
 .chatbot-message.ai-message .message-bubble {
   background: var(--white);
   color: var(--text-dark);
   border-bottom-left-radius: 4px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+  border: 1px solid rgba(37, 99, 235, 0.1);
 }
 
 /* AI 메시지 프로필 아이콘 */
@@ -3985,4 +4029,140 @@ a.next-page-button {
 #chatbotSendButton:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px var(--shadow-soft);
+}
+
+#chatbotSendButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.chatbot-loading {
+  text-align: center;
+  padding: 8px;
+  color: var(--text-light);
+  font-size: 12px;
+  font-style: italic;
+}
+
+.chatbot-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* ============================================
+   로딩 말풍선 (Typing Indicator)
+   ============================================ */
+
+.chatbot-message.loading-message {
+  justify-content: flex-start;
+}
+
+.chatbot-message.loading-message .message-bubble {
+  background: var(--white);
+  color: var(--text-dark);
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+  border: 1px solid rgba(37, 99, 235, 0.1);
+  min-width: 60px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 20px;
+}
+
+.loading-dots .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  animation: loadingBounce 1.4s infinite ease-in-out;
+  display: inline-block;
+}
+
+.loading-dots .dot:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.loading-dots .dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-dots .dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes loadingBounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-8px);
+    opacity: 1;
+  }
+}
+
+/* embedded-chatbot용 로딩 스타일 */
+.embedded-chatbot-messages .chatbot-message.loading-message .message-bubble {
+  background: var(--white);
+  color: var(--text-dark);
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+  border: 1px solid rgba(37, 99, 235, 0.1);
+  min-width: 60px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* chat-container용 로딩 스타일 (ideas.html) */
+.chat-container .chatbot-message.loading-message {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.chat-container .chatbot-message.loading-message .message-bubble {
+  background: var(--white);
+  color: var(--text-dark);
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+  border: 1px solid rgba(37, 99, 235, 0.1);
+  min-width: 60px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* main.js용 로딩 스타일 (index.html - .message 클래스) */
+.message.loading-message {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  margin-bottom: 8px;
+  justify-content: flex-start;
+}
+
+.message.loading-message .message-bubble {
+  background: var(--white);
+  color: var(--text-dark);
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+  border: 1px solid rgba(37, 99, 235, 0.1);
+  min-width: 60px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

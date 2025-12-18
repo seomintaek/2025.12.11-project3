@@ -229,30 +229,55 @@ async function sendMessage() {
   userInput.disabled = true;
   sendButton.disabled = true;
   
-  // 로딩 표시
-  showLoading();
+  // 로딩 말풍선 추가
+  addLoadingMessage();
   
   // AI 응답 받기
   try {
     step++;
     await getAIResponse();
+    // 로딩 말풍선 제거
+    removeLoadingMessage();
   } catch (error) {
     console.error('Error:', error);
+    // 로딩 말풍선 제거 (에러 발생 시에도)
+    removeLoadingMessage();
     addMessage('ai', '죄송해요. 오류가 발생했어요. 다시 시도해주세요. 😢');
   } finally {
-    hideLoading();
+    // 로딩 말풍선이 남아있으면 제거 (안전장치)
+    removeLoadingMessage();
+    // 기존 loadingIndicator 숨기기 (하위 호환성)
+    if (loadingIndicator) {
+      loadingIndicator.style.display = 'none';
+    }
     userInput.disabled = false;
     sendButton.disabled = false;
     userInput.focus();
   }
 }
 
+// 텍스트 정제 함수: ** 마크다운 제거
+function cleanMarkdown(text) {
+  if (!text) return '';
+  return text.replace(/\*\*/g, '');
+}
+
+// API Key 안전한 로딩
+function getApiKey() {
+  const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
+  if (!apiKey) {
+    console.error('API Key Missing');
+    return null;
+  }
+  return apiKey;
+}
+
 // AI 응답 받기
 async function getAIResponse() {
-  const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
+  const apiKey = getApiKey();
   
   if (!apiKey) {
-    throw new Error('OpenAI API 키가 설정되지 않았습니다. .env 파일을 확인해주세요.');
+    throw new Error('API 키 설정이 필요해요');
   }
 
   // Step에 따른 프롬프트 조정
@@ -290,7 +315,10 @@ async function getAIResponse() {
   }
 
   const data = await response.json();
-  const aiMessage = data.choices[0].message.content;
+  let aiMessage = data.choices[0].message.content;
+  
+  // 마크다운 정제 적용
+  aiMessage = cleanMarkdown(aiMessage);
   
   addMessage('ai', aiMessage);
   conversationHistory.push({
@@ -326,15 +354,55 @@ function addMessage(sender, text) {
   chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
-// 로딩 표시
-function showLoading() {
-  loadingIndicator.style.display = 'flex';
+// 로딩 말풍선 추가
+function addLoadingMessage() {
+  const messageDiv = document.createElement('div');
+  messageDiv.className = 'message ai-message loading-message';
+  messageDiv.id = 'loadingMessage';
+  
+  const bubble = document.createElement('div');
+  bubble.className = 'message-bubble';
+  
+  const loadingDots = document.createElement('div');
+  loadingDots.className = 'loading-dots';
+  
+  for (let i = 0; i < 3; i++) {
+    const dot = document.createElement('span');
+    dot.className = 'dot';
+    loadingDots.appendChild(dot);
+  }
+  
+  bubble.appendChild(loadingDots);
+  messageDiv.appendChild(bubble);
+  chatContainer.appendChild(messageDiv);
+  
   chatContainer.scrollTop = chatContainer.scrollHeight;
+  
+  return messageDiv;
 }
 
-// 로딩 숨기기
+// 로딩 말풍선 제거
+function removeLoadingMessage() {
+  const loadingMsg = document.getElementById('loadingMessage');
+  if (loadingMsg) {
+    loadingMsg.remove();
+  }
+}
+
+// 로딩 표시 (하위 호환성 유지)
+function showLoading() {
+  addLoadingMessage();
+  if (loadingIndicator) {
+    loadingIndicator.style.display = 'none'; // 기존 로딩 숨기기
+  }
+}
+
+// 로딩 숨기기 (하위 호환성 유지)
 function hideLoading() {
-  loadingIndicator.style.display = 'none';
+  removeLoadingMessage();
+  if (loadingIndicator) {
+    loadingIndicator.style.display = 'none';
+  }
 }
 
 // 앱 시작
