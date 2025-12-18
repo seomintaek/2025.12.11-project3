@@ -175,6 +175,13 @@ function saveHistory(history) {
   }
 }
 
+// 텍스트 정제 함수: ** 마크다운 제거
+function cleanMarkdown(text) {
+  if (!text) return '';
+  // ** 제거 (강조 표시)
+  return text.replace(/\*\*/g, '');
+}
+
 // 메시지 추가
 function addMessage(sender, text, scroll = true) {
   const messageDiv = document.createElement('div');
@@ -182,7 +189,9 @@ function addMessage(sender, text, scroll = true) {
   
   const bubbleDiv = document.createElement('div');
   bubbleDiv.className = 'message-bubble';
-  bubbleDiv.textContent = text;
+  // AI 메시지인 경우 마크다운 정제 적용
+  const cleanedText = sender === 'ai' ? cleanMarkdown(text) : text;
+  bubbleDiv.textContent = cleanedText;
   
   messageDiv.appendChild(bubbleDiv);
   chatbotMessages.appendChild(messageDiv);

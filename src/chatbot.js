@@ -199,9 +199,10 @@ function renderHistory(container) {
     // 환영 메시지가 없으면 새로 생성
     const welcomeDiv = document.createElement('div');
     welcomeDiv.className = 'chatbot-message ai-message';
+    const cleanedInitialMessage = cleanMarkdown(currentInitialMessage || '안녕하세요! 무엇을 도와드릴까요?');
     welcomeDiv.innerHTML = `
       <div class="message-bubble">
-        ${currentInitialMessage || '안녕하세요! 무엇을 도와드릴까요?'}
+        ${cleanedInitialMessage}
       </div>
     `;
     container.appendChild(welcomeDiv);
@@ -244,9 +245,10 @@ export function clearHistory(container, initialMessage) {
     if (initialMessage) {
       const welcomeDiv = document.createElement('div');
       welcomeDiv.className = 'chatbot-message ai-message';
+      const cleanedInitialMessage = cleanMarkdown(initialMessage);
       welcomeDiv.innerHTML = `
         <div class="message-bubble">
-          ${initialMessage}
+          ${cleanedInitialMessage}
         </div>
       `;
       targetContainer.appendChild(welcomeDiv);
@@ -365,9 +367,10 @@ export function initChatbot(options) {
       if (container.children.length === 0) {
         const welcomeDiv = document.createElement('div');
         welcomeDiv.className = 'chatbot-message ai-message';
+        const cleanedInitialMessage = cleanMarkdown(initialMessage);
         welcomeDiv.innerHTML = `
           <div class="message-bubble">
-            ${initialMessage}
+            ${cleanedInitialMessage}
           </div>
         `;
         container.appendChild(welcomeDiv);
