@@ -100,15 +100,26 @@ function selectMission(missionId) {
 
 function initNavigation() {
   const navItems = document.querySelectorAll('.nav-item');
+  const currentPath = window.location.pathname;
+  
+  // 현재 페이지 감지
+  let currentPage = 0;
+  if (currentPath.includes('sensors.html')) {
+    currentPage = 1;
+  } else if (currentPath.includes('ideas.html')) {
+    currentPage = 2;
+  } else if (currentPath.includes('practice.html')) {
+    currentPage = 3;
+  }
   
   navItems.forEach(item => {
     const stageNum = parseInt(item.dataset.stage, 10);
-    const currentPage = window.location.pathname.includes('practice.html') ? 3 : 0;
+    
+    // 모든 active 클래스 제거 후 현재 페이지에만 추가
+    item.classList.remove('active');
     
     if (stageNum === currentPage) {
       item.classList.add('active');
-    } else {
-      item.classList.remove('active');
     }
   });
 }
@@ -126,23 +137,11 @@ const CHATBOT_CONFIG = {
 
 // DOM 요소
 let chatbotMessages, chatbotInput, chatbotSendButton, chatbotToggle, chatbotClose, chatbotWindow, chatbotLoading, chatbotClear;
-let apiStatusBar, apiStatusText;
 
-// API Key 로드 및 상태 확인
+// API Key 로드
 function getApiKey() {
   const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
   return apiKey || null;
-}
-
-function updateApiStatus() {
-  const apiKey = getApiKey();
-  if (apiKey) {
-    apiStatusBar.className = 'api-status-bar api-status-connected';
-    apiStatusText.textContent = '🟢 API Key 연결됨';
-  } else {
-    apiStatusBar.className = 'api-status-bar api-status-disconnected';
-    apiStatusText.textContent = '🔴 API Key 없음';
-  }
 }
 
 // 대화 기록 로드
@@ -398,16 +397,11 @@ function initChatbot() {
   chatbotWindow = document.getElementById('chatbotWindow');
   chatbotLoading = document.getElementById('chatbotLoading');
   chatbotClear = document.getElementById('chatbotClear');
-  apiStatusBar = document.getElementById('apiStatusBar');
-  apiStatusText = document.getElementById('apiStatusText');
   
   if (!chatbotMessages || !chatbotInput || !chatbotSendButton) {
     console.error('챗봇 DOM 요소를 찾을 수 없습니다.');
     return;
   }
-  
-  // API 상태 업데이트
-  updateApiStatus();
   
   // 이벤트 리스너 등록
   chatbotSendButton.addEventListener('click', sendMessage);

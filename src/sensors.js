@@ -606,7 +606,37 @@ document.addEventListener('keydown', (e) => {
 // 페이지 로드 시 초기화
 // ============================================
 
+// 네비게이션 초기화
+function initNavigation() {
+  const navItems = document.querySelectorAll('.nav-item');
+  const currentPath = window.location.pathname;
+  
+  // 현재 페이지 감지
+  let currentPage = 0;
+  if (currentPath.includes('sensors.html')) {
+    currentPage = 1;
+  } else if (currentPath.includes('ideas.html')) {
+    currentPage = 2;
+  } else if (currentPath.includes('practice.html')) {
+    currentPage = 3;
+  }
+  
+  navItems.forEach(item => {
+    const stageNum = parseInt(item.dataset.stage, 10);
+    
+    // 모든 active 클래스 제거 후 현재 페이지에만 추가
+    item.classList.remove('active');
+    
+    if (stageNum === currentPage) {
+      item.classList.add('active');
+    }
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  // 네비게이션 초기화
+  initNavigation();
+  
   renderStudyCards();
   studySection.style.opacity = '1';
   studySection.style.transform = 'translateY(0)';

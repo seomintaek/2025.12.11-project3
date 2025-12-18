@@ -77,26 +77,26 @@ const SYSTEM_PROMPT = `당신은 학생의 아이디어를 실현해주는 메�
 // 네비게이션 바 초기화
 function initNavigation() {
   const navItems = document.querySelectorAll('.nav-item');
-  const currentStage = ProgressManager.getCurrentStage();
+  const currentPath = window.location.pathname;
+  
+  // 현재 페이지 감지
+  let currentPage = 0;
+  if (currentPath.includes('sensors.html')) {
+    currentPage = 1;
+  } else if (currentPath.includes('ideas.html')) {
+    currentPage = 2;
+  } else if (currentPath.includes('practice.html')) {
+    currentPage = 3;
+  }
   
   navItems.forEach(item => {
     const stageNum = parseInt(item.dataset.stage, 10);
-    const currentPage = window.location.pathname.includes('index.html') ? 1 :
-                       window.location.pathname.includes('sencors.html') ? 2 : 3;
     
-    // 현재 페이지 표시
+    // 모든 active 클래스 제거 후 현재 페이지에만 추가
+    item.classList.remove('active');
+    
     if (stageNum === currentPage) {
       item.classList.add('active');
-    }
-    
-    // 잠금 처리
-    if (currentStage < stageNum) {
-      item.classList.add('locked');
-      item.href = '#';
-      item.addEventListener('click', (e) => {
-        e.preventDefault();
-        alert(`아직 ${stageNum}단계를 완료하지 않았습니다. 먼저 이전 단계를 완료해주세요!`);
-      });
     }
   });
 }

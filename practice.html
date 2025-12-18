@@ -9,11 +9,6 @@
     <title>Maker's Tutor - 미리보기 실험실</title>
   </head>
   <body class="practice-page">
-    <!-- API Key 상태 표시줄 (디버깅용) -->
-    <div class="api-status-bar" id="apiStatusBar">
-      <span id="apiStatusText">로딩 중...</span>
-    </div>
-
     <!-- 네비게이션 바 -->
     <nav class="top-navigation" id="topNavigation">
       <a href="./index.html" class="nav-brand" title="Maker's Tutor 홈">
@@ -168,13 +163,24 @@
         const navItems = document.querySelectorAll('.nav-item');
         const currentPath = window.location.pathname;
         
+        // 현재 페이지 감지
+        let currentPage = 0;
+        if (currentPath.includes('sensors.html')) {
+          currentPage = 1;
+        } else if (currentPath.includes('ideas.html')) {
+          currentPage = 2;
+        } else if (currentPath.includes('practice.html')) {
+          currentPage = 3;
+        }
+        
         navItems.forEach(item => {
-          if (currentPath.includes('practice.html')) {
-            if (item.getAttribute('href').includes('practice.html')) {
-              item.classList.add('active');
-            } else {
-              item.classList.remove('active');
-            }
+          const stageNum = parseInt(item.dataset.stage, 10);
+          
+          // 모든 active 클래스 제거 후 현재 페이지에만 추가
+          item.classList.remove('active');
+          
+          if (stageNum === currentPage) {
+            item.classList.add('active');
           }
         });
       });
